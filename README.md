@@ -1,4 +1,4 @@
-# Source code for Bootstrap website's template
+# bon voyage
 
 #### Website
   - [Home page](https://thienkim-frontend.github.io/bon-voyage/)

@@ -1,0 +1,33 @@
+mixin widget-category
+	.widget.content-wrapper.aside-menu 
+		h3.title-section CATEGORIES
+		+simpleMenu(["CANCUN", "FLORIDA", "HAWAII", "MAZATLAN", "MYRTLE BEACH", "ARUBA", "CABO SAN LUCAS", "CARIBBEAN", "ISRAEL", "MULTI-LOCATIONS", "WESTERN USA"])(class="menu-list-sm")
+
+mixin product-list(name, urlImg, price, isDiscount, oldPrice)
+	// begin product-list
+	li: a(href="#")
+		img(src="images/" + urlImg, alt="").img-fluid
+		h5= name
+		.price
+			if (isDiscount)
+				del: span= oldPrice
+				ins: span= price
+			else
+				span= price
+	// end product-list 
+mixin widget-bestSellers
+	.widget.content-wrapper
+		h3.title-section BEST SELLERS
+		ul.product-list
+			+product-list("bermuda", "img01-90x90.jpg", "$850", "isDiscount", "$890")
+			+product-list("Dubai-mina", "img02-90x90.jpg", "$650", "isDiscount", "$700")
+			+product-list("Hawaii", "img03-90x90.jpg", "$890")
+			+product-list("Family-enjoying", "img04-90x90.jpg", "$800")
+			+product-list("Desert", "img05-90x90.jpg", "$670")
+
+mixin widget-tags
+	.widget.content-wrapper
+		h3.title-section Tags
+		.tagcloud
+				each item in ["augue quis", "bibendum", "bibendum mauris", "elit", "ipsum dolor Lorem", "sit amet", "suscipit tempor"]
+						a(href="#")= item

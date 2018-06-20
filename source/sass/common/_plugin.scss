@@ -1,0 +1,62 @@
+// @import "./modules/_owlCarousel";
+// @import "./modules/_datePicker";
+.main-slider{
+    .slider__item{
+        @include pseudo-overlay($type-bg: gradient, $val-bg: false);
+        img{ width: 100%; }
+    }
+    .slider__caption{
+        position: absolute; bottom: 0; left: 0;
+        padding: 0 30px 30px;
+        h4{ text-transform: uppercase; font-size: 2.4rem; }
+    }
+}
+.slick-slider{
+    @extend %nav-slickSlider;
+    .slick-arrow{
+        @extend %slick-arrow;
+    }
+    .slick-prev{
+        @extend %slick-prev;
+    }
+    .slick-next{
+        @extend %slick-next;
+    }
+}
+
+%nav-slickSlider{
+    %slick-arrow{
+        $width: 45px;
+        $height: 45px;
+
+        text-indent: -9999px;
+        opacity: 0.6;
+        position: absolute; top: 50%;
+        width: $width; height: $height;
+        margin-top: - ($height / 2);
+        transition: .2s all ease-out;
+
+        background-repeat: no-repeat;
+        background-position: center;    
+        &:hover{
+            opacity: 1;
+        }
+    }
+    %slick-prev{
+        right: 100%;
+        @include svgBg($svgIcon: "angle-left", $color: $white);
+    }
+    %slick-next{
+        left: 100%;
+        @include svgBg($svgIcon: "angle-right", $color: $white);
+    }        
+}
+.thumbnail-slider{
+    background: $white;
+    margin-top: 30px;
+    padding: 15px 7.5px 0;
+    li{
+        margin: 0px 7.5px ;
+    }
+    img{ width: 100%; }
+}

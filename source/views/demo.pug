@@ -1,0 +1,16 @@
+//- extends layout to your side
+extends layout/layout
+
+block var
+  - title = "Demo page";
+block content
+  // Start hero-section
+  section.info-section 
+    mixin foo( text )
+      p.bar&attributes(attributes)= text
+
+    each element, i in ['foo', 'bar', 'baz']
+      +foo(element)(data-sort="baz", ng-click="handler", data-foo=(0===i), ng-direct=(1===i))
+
+  // End hero-section
+

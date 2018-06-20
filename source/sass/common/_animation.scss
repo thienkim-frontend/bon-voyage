@@ -1,0 +1,383 @@
+// @include overlay-fullWidth;
+@mixin overlay-fullWidth{
+    content: '';
+    position: absolute; top: 0; left: 0; 
+    width: 100%; height: 100%;
+}
+
+
+@mixin effect-border{
+    display: inline-block;
+    position: relative;
+    &:before{
+        content: "";
+        visibility: hidden;
+        position: absolute; bottom: 0; left: 0;
+        width: 100%; height: 1px;
+        background-color: $grey;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out 0s;
+    }
+    &:hover{
+        &:before{
+            visibility: visible;
+            transform: scaleX(1);
+        }
+    }
+}
+
+@mixin effect-grayscale{
+    filter: grayscale(100%);
+    transition: all 0.2s linear;
+    &:hover{
+        filter: none;
+        -webkit-filter: grayscale(0%);
+    }
+}
+@mixin effect-zoonOut{
+    transition: all 0.3s ease-in-out 0s;
+    transform: scaleX(1);
+    &:hover{
+        transform: scale(1.02, 1.02);
+    }
+}
+@mixin effect-fadeIn{
+    .navbar-nav{
+        > li{
+          &:hover{
+            .sub-menu{
+              transform: translateY(0);
+              visibility: visible; opacity: 1;
+            }
+          }
+        }
+        .sub-menu{
+            width: 225px;
+            opacity: 0; visibility: hidden;
+            position: absolute; top: 100%; left: 20px; z-index: 999;
+            padding: 10px 0 10px 0;
+            background-color: $white;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.09);
+            transform: translateY(25px);
+            transition: all 0.25s ease;
+            a{
+                padding: 5px 15px;
+                &:hover{
+                  color: $highlight-color;
+                }
+            }
+        }
+    }
+}
+/*-----------------------------------------
+ 3. IMAGE
+------------------------------------------*/
+@mixin effect-tooltip{
+    position: relative;
+    &:before{
+        content:"";
+        opacity: 0;
+        position: absolute; top: -10px; left: -10px; z-index: 1;
+        display: block;
+        height: 60px; width: 60px;
+        background: $highlight-color;
+        border-radius: 100%;
+        animation: circle_pulsate 2s linear infinite;
+    }
+    @keyframes circle_pulsate {
+        0%    {transform: scale(0.4); opacity: 0;}
+        50%   {opacity: 0.7;}
+        100%  {transform: scale(1); opacity: 0;}
+    }
+}
+/*-----------------------------------------
+ 3. IMAGE
+------------------------------------------*/
+@mixin effect-text{
+    .nav{
+        > li {
+            &:hover, &.active {
+                span:before{ max-width: 100%; }
+            }
+            > a {
+                span{
+                position: relative;
+                display: inline-block;
+                white-space: nowrap;
+                transition: all 0.2s linear;
+                    &::before {
+                        content: attr(data-hover);
+                        position: absolute; top: 0; left: 0;
+                        max-width: 0; overflow: hidden;
+                        border-bottom: 1px solid $highlight-color;
+                        color: $highlight-color;                
+                        transition: max-width 0.5s;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin hover-img{
+    .product-item{
+        position: relative;
+        img{
+            width: 100%; transition: all 300ms ease-out;
+        }
+        .img-hover{
+            opacity: 0;
+            position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+        }
+        &:hover{
+            .img-hover{opacity: 1;}
+        }
+    }
+}
+
+
+/*-----------------------------------------
+ 4. EFFECT BUTTON
+------------------------------------------*/ 
+%effect-gradient{
+    position: relative; z-index: 3;
+    color: $white;
+    @extend %bg-hightlight;
+    &:before{
+        content: '';
+        position: absolute; top: 0; left: 0; z-index: -1;
+        width: 100%; height: 100%;
+        transition: transform .4s cubic-bezier(0.25,.46,.45,.94);
+        background: linear-gradient(to right, #9105ea, $color-highlight);
+    }
+    &:hover{
+        color: $white;
+        &:before{
+            transform: translate3d(-100%,0,0);
+        }
+    }
+}
+%effect-style1{
+    transition: all 0.4s ease-in-out;
+    position: relative;
+    z-index: 2;
+    color: $white;
+    &:before, &:after{
+        z-index: -1;
+        transition: all 0.3s;
+    }
+    &:before{
+        @include overlay-fullWidth;
+        background-color: $color-highlight;
+    }
+    &:after{
+        @include overlay-fullWidth;
+        border: 1px solid $color-highlight;
+    }
+    &:hover{
+        color: $color-highlight;
+        &:before{ 
+            opacity: 0;
+            transform: scale(0.5,0.5); 
+        }
+        &:after{
+            opacity: 1;
+            transform: scale(1,1);
+        }
+    }
+}
+
+/*-----------------------------------------
+ 4. EFFECT IMAGE
+------------------------------------------*/ 
+%effect-img-01{
+    .thumbnail-wrapper{
+        position: relative; 
+        overflow: hidden;
+        background: $color-highlight; 
+        img{
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            transform: scale(1) translateX(0);
+            transition: all 0.4s ease-in-out;
+        }
+        &:before{
+            pointer-events: none;
+            backface-visibility: hidden;
+            @include overlay-fullWidth;
+            background: rgba(255,255,255,0.5);
+            transition: transform 0.6s;
+            transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,-100%,0);
+        }
+    }
+    
+    
+    &:hover{
+        .thumbnail-wrapper{
+            &:before{ transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,100%,0); }
+            img{
+                opacity: 0.6;
+                transform: scale(1.5) translateX(11.2px);
+
+            }
+        }
+    }
+}
+%effect-img-02{
+    img{ width: 100%;
+        @include center-position(); }
+    &:before{
+       @include overlay-fullWidth;
+        background: #1a1717;
+        opacity: 0.8;
+        z-index: 1;
+    }
+    .overlay{
+        // position: absolute; top: 50%; left: 0; right: 0;
+        z-index: 9;
+        padding: 30px 15px;
+        margin-top: 70px;
+        width: 100%;
+        text-align: center;
+        color: $white;
+        @include center-position($direction: vertical);
+        @extend %default-transition;
+    }
+    [class^="icon-"], [class*=" icon-"]{
+        display: inline-block;
+        width: 96px; height: 96px;
+        line-height: 87px;
+        font-size: 60px;
+        border-radius: 100%;
+        border: 4px solid $white;
+        margin-bottom: 16px;
+    }
+    h4{
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 11px;
+    }
+    p, a{
+        visibility: hidden;
+        opacity: 0;
+    }
+    &:hover{
+        &:before{
+            @extend %bg-hightlight;
+        }
+        .overlay{
+            margin-top: 0;
+        }
+        p, a{ visibility: visible; opacity: 1;}
+    }
+    
+    @include media(md){ 
+        
+    };
+    @include media-only(md){
+        // h4{
+        //     font-size: 1.4rem;
+        //     margin-bottom: 0;
+        // }
+    }
+
+}
+/*-----------------------------------------
+ 4. CIRCLE LOADER 
+------------------------------------------*/
+@mixin loader--style1{
+    #loading-wrapper{
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;
+        background: rgba(0, 0, 0, .6);
+    }
+    .sk-cube-grid {
+      width: 40px; height: 40px;
+    //   margin: 100px auto;
+      @include center-position();
+    }
+
+    .sk-cube-grid .sk-cube {
+      width: 33%; height: 33%;
+      background-color: #fff;
+      float: left;
+      animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+    }
+    .sk-cube-grid .sk-cube1 { animation-delay: 0.2s; }
+    .sk-cube-grid .sk-cube2 { animation-delay: 0.3s; }
+    .sk-cube-grid .sk-cube3 { animation-delay: 0.4s; }
+    .sk-cube-grid .sk-cube4 { animation-delay: 0.1s; }
+    .sk-cube-grid .sk-cube5 { animation-delay: 0.2s; }
+    .sk-cube-grid .sk-cube6 { animation-delay: 0.3s; }
+    .sk-cube-grid .sk-cube7 { animation-delay: 0s; }
+    .sk-cube-grid .sk-cube8 { animation-delay: 0.1s; }
+    .sk-cube-grid .sk-cube9 { animation-delay: 0.2s; }
+
+    @keyframes sk-cubeGridScaleDelay {
+      0%, 70%, 100% { transform: scale3D(1, 1, 1); } 
+      35% { transform: scale3D(0, 0, 1); } 
+    }
+}
+
+@mixin loader--style2{
+    #loading-wrapper{
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;
+        background: rgba(0, 0, 0, .6);
+    }
+    .sk-folding-cube {
+        width: 40px; height: 40px;
+        position: relative;
+        transform: rotateZ(45deg);
+        @include center-position($direction: both, $width: 40px, $height: 40px);
+    }
+
+    .sk-folding-cube .sk-cube {
+        float: left;
+        width: 50%;
+        height: 50%;
+        position: relative;
+        transform: scale(1.1); 
+    }
+    .sk-folding-cube .sk-cube:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        animation: sk-foldCubeAngle 2.4s infinite linear both;
+        transform-origin: 100% 100%;
+    }
+    .sk-folding-cube .sk-cube2 {
+        transform: scale(1.1) rotateZ(90deg);
+    }
+    .sk-folding-cube .sk-cube3 {
+        transform: scale(1.1) rotateZ(180deg);
+    }
+    .sk-folding-cube .sk-cube4 {
+        transform: scale(1.1) rotateZ(270deg);
+    }
+    .sk-folding-cube .sk-cube2:before {
+        animation-delay: 0.3s;
+    }
+    .sk-folding-cube .sk-cube3:before {
+        animation-delay: 0.6s; 
+    }
+    .sk-folding-cube .sk-cube4:before {
+        animation-delay: 0.9s;
+    }
+
+    @keyframes sk-foldCubeAngle {
+    0%, 10% {
+        transform: perspective(140px) rotateX(-180deg);
+        opacity: 0; 
+    } 25%, 75% {
+        transform: perspective(140px) rotateX(0deg);
+        opacity: 1; 
+    } 90%, 100% {
+        transform: perspective(140px) rotateY(180deg);
+        opacity: 0; 
+    }
+    }
+}

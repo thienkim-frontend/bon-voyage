@@ -1,0 +1,1010 @@
+/*-----------------------------------------
+ TABLE OF CONTENT
+ 1. HEADING
+ 2. TYPOGRAPHY
+ 3. LAYOUT
+ 4. FORM
+------------------------------------------*/
+@function calc-rem($target-px) {
+  @return ($target-px / 16px) * 1rem;
+}
+
+// @include calc( width, '100% - 2px');
+@mixin calc($prop, $val) {
+    @each $pre in -webkit-, -moz-, -o-, "" {
+        #{$prop}: $pre + calc(#{$val});
+    } 
+}
+
+// @include vendor-prefix(hyphens, auto);
+@mixin vendor-prefix($name, $value...) {
+  @each $prefix in -webkit-, -moz-, -o-, "" {
+    #{$prefix}#{$name}: $value;
+  }
+}
+
+
+/*-----------------------------------------
+ 2. TYPOGRAPHY
+------------------------------------------*/
+@mixin typography-reset{
+    html { font-size: 62.5%; } /* =10px */
+    body{
+        position: relative;
+        font-family: $body-font;
+        color: $base-color;
+        overflow-x: hidden!important;
+        -webkit-font-smoothing:antialiased;
+    }
+    a{
+        color: $base-color;
+        text-decoration: none;
+        @include transition;
+        &:hover{
+            color: $color-highlight;
+        }
+        &:hover, &:active, &:visited, &:focus{
+            text-decoration: none;
+        }
+    }
+    ins{ text-decoration: none; }
+    ::selection {
+        background: $color-highlight;
+        color: $white;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    blockquote{
+        position:relative;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        color: $dark-grey;
+        border-left: 5px solid $color-highlight;
+        p{ font-size: 16px; }
+        cite{
+            font-style: italic;
+            &:before{ content: '\2014 \00A0'; }
+        }
+        &:before {
+            content: "";
+            position: absolute; top: 50%; left: 0;
+            margin-top: -8px;
+        }
+    }
+}
+%reset{
+  &-ul{ list-style: none; padding-left: 0; margin-bottom: 0; }
+  &-margin{ margin: 0; }
+  &-padding{ padding: 0; }
+}
+
+
+%sr-only{
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px; border: 0;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+}
+%clearfix{
+    &:after {
+		content: "";
+        display: block;
+        clear: both;
+    }
+}
+// custom grid with 12 columns
+@mixin custom-grid($total, $gutter){
+    .row {
+        margin-left: -$gutter;
+        @extend %clearfix;
+    }
+    [class^="cols-"], [class*=" cols-"] {
+        float: left;
+        padding-left: $gutter;
+        min-height: 1px;
+        box-sizing: border-box;
+    }
+    @for $i from 1 through 12 {
+        .cols-#{$i} {
+            width: ((100 / 12) * $i) * 1%;
+        }
+    }
+}
+
+%bootstrap-gutter15{
+    .row{ 
+        margin-left: -7.5px; margin-right: -7.5px;  margin-bottom: -15px;
+        [class*="col-"]{ padding-left: 7.5px; padding-right: 7.5px; margin-bottom: 15px;}
+    }
+}
+
+
+
+/*-----------------------------------------
+ 2. ICON FONT
+------------------------------------------*/
+/* 
+As good of semantics as we can get
+As little awkwardness for screen readers as possible
+
+<a href="#rss" class="icon-alone">
+    <span aria-hidden="true" data-icon="&#x25a8;"></span>
+    <span class="screen-reader-text">RSS</span>
+</a> 
+*/
+%iconfont{
+    [data-icon]:before {
+		content: attr(data-icon);
+		font-family: icons;
+        speak: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    .icon-alone {
+        display: inline-block; /* Fix for clickability issue in WebKit */
+    }
+    .screen-reader-text { /* Reusable, toolbox kind of class */
+        position: absolute; top: -9999px; left: -9999px;
+    }
+}
+/* soical-icons@2x.png exactly twice as wide and twice as high as the normal sprites
+ * @include icon-sprite(-40px, 'facebook', 'instagram');
+*/
+@mixin icon-sprite($width: -125px, $icon-name...){
+	// i{ background: url(#{$image}/common/soical-icons@2x.png) 0 0 no-repeat; }
+    @each $name in $icon-name{
+        $i: index($icon-name, $name);
+        .#{$name}{
+            background-position-x: $width * ($i - 1);
+        }
+    }
+}
+
+
+/*
+ * div::after {
+    @include pseudo();
+   }
+ */
+$slash: "\002f";
+$bullet: "\2022"; // &bull;
+$rightwards-arrow: "\2192"; // &rarr;
+$leftwards-arrow: "	\2190"; // &larr;
+$ellipsis: "\2026"; // &hellip;
+$left-single-quotation: "\2018"; //&lsquo;
+$left-double-quotation: "\201C"; //&ldquo;
+$comma: "\002c\00a0";
+@mixin pseudo($content: '', $display: inline-block){
+	@if($content != ''){
+		@each $icon, $value in (slash: "\002f", bullet: "\2022", left-single-quotation: "\2018") {
+			@if( $content == $icon) {
+				content: $value;
+			}
+		}
+	}@else{
+		content: $content;
+	}
+    display: $display;
+}
+
+/* https://fontawesome.com/v4.7.0/icons/
+ * @include pseudo-fontawesome(angle-down){
+	font-size: 14px;
+   };
+ */
+@mixin pseudo-fontawesome($content, $position: inline-block){
+	&:after{
+		@each $icon, $value in (check: "\f00c", check-square-o: "\f046", chevron-right: "\f054", chevron-down: "\f078", angle-right: "\f105", angle-down: "\f107", angle-double-down: "\f103", long-arrow-right: "\f178", caret-right: "\f0da", caret-down: "\f0d7", quote-right: "\f10e") {
+			@if( $content == $icon) {
+				content: $value;
+			}
+		}
+		@if( $position == inline-block){
+			position: inline-block; vertical-align: middle;
+			margin-left: 10px;
+		}@else if( $position == absolute){
+			position: absolute; left: 0px; top: 0;
+			height: 100%;
+		}
+		font-family: FontAwesome;
+		text-rendering: auto;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		@content;
+    }
+    @at-root #{&}--thick{
+        -webkit-text-stroke: 2px white;
+        -webkit-text-fill-color: cyan;
+        text-shadow: -1px -1px 0 #999, 1px -1px 0 #999, -1px 1px 0 #999, 1px 1px 0 #999;
+    }
+}
+
+%border{
+  &-dash-vertical{
+    width: 2px; height: 100%;
+    background-image: linear-gradient(to bottom, $color-middle, $color-middle 70%,  $white 70%, $white);
+    background-size: 1px 12px;
+  }
+  &-dash-horizonal{
+    width: 100%; height: 2px;
+    background-image: linear-gradient(90deg, $color-middle, $color-middle 70%,  $white 70%, $white);
+    background-size: 24px 1px;
+  }
+  &-gradient{
+    &:after{
+        content:"";
+        display: block;
+        width: 60px;
+        border-bottom: 4px solid transparent;
+        border-image: linear-gradient(to right,$color-purple 0,$color-highlight 100%);
+        border-image-slice: 1;
+        margin: 0 auto ;
+    }
+  }
+}
+
+
+
+
+
+/*-----------------------------------------
+ 2. SVG
+------------------------------------------*/
+    @function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+    }
+/* 
+ * @include svgBg($svgIcon, $color, $position: false, $bgSize: false);
+ * @include pseudo-svgBg($type: absolute, $width: 8px, $height: 100%, $svgIcon: angle-down , $svgColor: "#292929");
+ */
+    // Rendering of '#' Characters In Inline SVG Data Started to Cause A Chrome Deprecation Warning
+    // from fill='#e8e8e8' to fill='%23e8e8e8'
+    @mixin svgBg($svgIcon, $color, $position: false, $bgSize: false){
+        $viewBox: "";
+        $path: "";
+        $svg-awesome: [
+            ["angle-right", "0 0 256 512", "M17.525 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L205.947 256 10.454 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L34.495 36.465c-4.686-4.687-12.284-4.687-16.97 0z"],
+            ["angle-left", "0 0 256 512", "M238.475 475.535l7.071-7.07c4.686-4.686 4.686-12.284 0-16.971L50.053 256 245.546 60.506c4.686-4.686 4.686-12.284 0-16.971l-7.071-7.07c-4.686-4.686-12.284-4.686-16.97 0L10.454 247.515c-4.686 4.686-4.686 12.284 0 16.971l211.051 211.05c4.686 4.686 12.284 4.686 16.97-.001z"],
+            ["quote-left", "0 0 512 512", "M464 256h-80v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8c-88.4 0-160 71.6-160 160v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zm-288 0H96v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8C71.6 32 0 103.6 0 192v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48z"],
+            ["angle-down", "0 0 320 512", "M151.5 347.8L3.5 201c-4.7-4.7-4.7-12.3 0-17l19.8-19.8c4.7-4.7 12.3-4.7 17 0L160 282.7l119.7-118.5c4.7-4.7 12.3-4.7 17 0l19.8 19.8c4.7 4.7 4.7 12.3 0 17l-148 146.8c-4.7 4.7-12.3 4.7-17 0z"],
+            ["chevron-right", "0 0 320 512", "M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"],
+            ["check", "0 0 448 512", "M413.505 91.951L133.49 371.966l-98.995-98.995c-4.686-4.686-12.284-4.686-16.971 0L6.211 284.284c-4.686 4.686-4.686 12.284 0 16.971l118.794 118.794c4.686 4.686 12.284 4.686 16.971 0l299.813-299.813c4.686-4.686 4.686-12.284 0-16.971l-11.314-11.314c-4.686-4.686-12.284-4.686-16.97 0z"]
+        ];
+        @each $val in $svg-awesome {
+            @if($svgIcon == nth($val, 1)){
+                $viewBox: nth($val, 2);
+                $path: nth($val, 3);
+            }
+        }
+        $encoded-color: str-replace('' + $color, '#', '%23');
+        background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg'  viewBox='#{$viewBox}'%3E%3Cpath fill='#{$encoded-color}' d='#{$path}'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        
+        @if($position){
+            background-position: $position;
+        }
+        @if($bgSize){
+            background-size: $bgSize;
+        }
+    }
+    @mixin pseudo-svgBg($type: absolute, $width: 8px, $height: 100%, $svgIcon: angle-down , $svgColor: "#292929"){
+        position: relative;
+        &:after{
+            content: "";
+            width: $width; height: $height;
+            @if ($type == absolute){
+                position: absolute; top:0; right: 0;
+            }@else if ($type == inline-block){
+                display: inline-block; vertical-align: middle; margin-left: 10px;
+            }@else if ($type == custom){
+                @content;
+            }
+            @include svgBg($svgIcon, $svgColor);
+        }
+    }
+
+    %animateSvg{
+        // stroke-width: 10;
+        path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear forwards;
+        }
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    }
+/*-----------------------------------------
+ 3. ALIGN 
+------------------------------------------*/
+/* 
+ * $direction: both | vertical | horizontal;
+ * @include center-position($direction: both, $width: false, $height: false);
+ */
+    @mixin center-position($direction: both, $width: false, $height: false) {
+        position: absolute;
+        @if ($direction == horizontal){
+            left: 50%;
+            @if ($width) {
+                margin-left: - ($width / 2);
+            }@else{
+                transform: translateX(-50%);
+            }
+        }
+        @else if ($direction == vertical){
+            top: 50%;
+            @if ($height) {
+                margin-left: - ($width / 2);
+            }@else{
+                transform: translateY(-50%);
+            }
+        }
+        @else if ($direction == both){
+            top: 50%; left: 50%;
+            @if ($width and $height) {
+                margin-left: - ($width / 2);
+                margin-top: - ($height / 2);
+            }@else{
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+/* CENTER
+ * @extend %center-multiLines;
+ * @include %center-singleLine;
+ * @extend %center-table;
+ * @extend %center-flex;
+ */
+    %center-multiLines{
+        display: block;
+        margin-left: auto; margin-right: auto;
+    }
+    %center-inlineBlock{
+        &:after{
+            content: "";
+            display: inline-block; vertical-align: middle;
+            height: 100%;
+        }
+        %block {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+        
+    @mixin center-singleLine($height: 100px, $border-width: 0px){
+        text-align: center;
+        height: $height; line-height: $height - ($border-width * 2); // equal to the height
+        white-space: nowrap;
+    }
+    %center-table{
+        %container{
+            display: table; table-layout: fixed;
+            border-collapse: collapse;
+        }
+        %centered-vertical{
+            display:table-cell;
+            vertical-align: middle;
+        }
+        %centered-horizontal{
+            $fixed-width: 80%;
+            width: $fixed-width;
+            margin-left: auto; margin-right: auto;
+        }
+    }
+    %center-flex{
+        display: flex;
+        align-items: center; // veritcal
+        justify-content: center; // horizontal
+        %block{
+            flex: 1;
+            width: 0;
+        }
+    }
+
+
+/* EQUALHEIGHT
+ * @include %equalHeigh-position;
+ * @include %equalHeigh-padding;
+ * @include %equalHeigh-table;
+ * @include %equalHeigh-flex;
+ */
+    $bg-block: #eee;
+    %equalHeight-position{
+        .row{ position: relative; }
+        [class*="col-"]{ position: static; }
+        %block-inner{
+            content: "";
+            display: block;
+            position: absolute; top: 0; bottom: 0;
+            width: 360px; 
+            background: $bg-block;
+            z-index: -1;
+        }
+    }
+    %equalHeight-padding{
+        .row{ overflow: hidden; }
+        %block-inner{
+            margin-bottom: -99999px;
+            padding-bottom: 99999px;
+            background: $bg-block;
+        }
+    }
+    %equalHeight-table{
+        .row{ 
+            display: table; table-layout: fixed;
+            border-spacing: 30px 0px;
+            margin-left: -30px; margin-right: -30px;
+            &:before, &:after{ content: none; }
+        }
+        [class*="col-"]{ 
+            float: none;
+            display: table-cell; 
+            background: $bg-block;
+        }
+    }
+    // works well for multiple rows
+    %equalHeight-flex{
+        .row{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        %block-inner{
+            height: 100%;
+            background: $bg-block;
+        }
+    }
+
+
+/*-----------------------------------------
+ 3. LAYOUT
+------------------------------------------*/
+%custom-grid{
+    .four-columns{
+        width: 25%;
+        float: left;
+		&:nth-of-type(4n+1) {
+		  @extend %clearfix;
+        }
+        // Only the first 4 elements
+        &:nth-child(-n+4){}
+        // item 4 and onwards
+        &:nth-child(n+4){}
+    }
+    &:first-of-type{}
+    &:not(.different){}
+    &:not(:first-of-type){}
+    &:nth-of-type(2n){}
+    &:nth-of-type(odd){}
+    &::first-letter{}
+}
+@mixin truncate($width) {
+    max-width: $width;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* triangle
+ * $direction: up | down | left | right;
+ * @include triangle($direction, $color, $size: 6px);
+ */
+@mixin triangle($direction, $color, $size: 6px){
+  .triangle-#{$direction}{
+    width: 0; height: 0;
+    
+    @if ($direction == up){
+      border-left: $size solid transparent;
+      border-right: $size solid transparent;
+      border-bottom: $size solid $color;
+
+    }@else if ($direction == down){
+      border-left: $size solid transparent;
+      border-right: $size solid transparent;
+      border-top: $size solid $color;
+
+    }@else if ($direction == left){
+      border-top: $size solid transparent;
+      border-bottom: $size solid transparent;
+      border-right: $size solid $color;
+
+    }@else if ($direction == right){
+      border-top: $size solid transparent;
+      border-bottom: $size solid transparent;
+      border-left: $size solid $color;
+    }
+  }
+}
+
+// @include triangle-breabscrumb($direction: top, $width: 16px, $height: 18px, $color: $color-highlight);
+@mixin triangle-breabscrumb($direction: top, $width: 16px, $height: 18px, $color: $color-highlight){
+    &:before, &:after{
+		content: "";
+		position: absolute;
+		width: 0; height: 0;
+		border-style: solid;
+    }
+    @if($direction == top){
+        &:before{
+            top: 0px; right: -$width;
+            border-width: $height 0 0 $width;
+            border-color: transparent transparent transparent $color;
+        }
+        &:after{
+            top: 0px; left: -$width;
+            border-width: 0 0 $height $width;
+            border-color: transparent transparent $color transparent;
+        }
+    }@else if($direction == bottom){
+        &:before{
+            bottom: 0px; left: -$width;
+            border-width: 0 $width $height 0;
+            border-color: transparent $color transparent transparent;
+        }
+        &:after{
+            bottom: 0px; right: -$width;
+            border-width: $height $width 0 0;
+            border-color: $color transparent transparent transparent;
+        }
+    }
+}   
+
+// @include triangle-blockquote($direction: left, $width: 30px, $height: 42px, $degree: 37deg, $color: $white);
+@mixin triangle-blockquote($direction: left, $width: 30px, $height: 42px, $degree: 37deg, $color: $white){
+    position: relative;
+    &:after{
+        content: "";
+        position: absolute; left: 50%; top: 100%;
+        width: 0; height: 0;
+        border-style: solid;
+        
+        @if($direction == left){
+            transform: skewX(-$degree) translatex(-50%);
+            border-width: $width $height 0 0;
+            border-color: $color transparent transparent transparent;
+        }
+        @if($direction == right){
+            border-width: 0px $height $width 0;
+            transform: skewX($degree) translatex(-50%);
+            border-color: transparent $color transparent transparent;
+        }
+    }
+}
+/*-----------------------------------------
+ 3. IMAGE
+------------------------------------------*/
+/* make images/ background images maintain a ratio
+ * @include responsive-ratio(16,9);
+ * @include responsive-ratio(3,4);
+ */
+@mixin responsive-ratio($x, $y, $pseudo: false) {
+	$padding: unquote( ( $y / $x ) * 100 + '%' );
+	position: relative;
+    @if $pseudo {
+        &:before {
+            @include pseudo($pos: relative);
+            width: 100%;
+            padding-top: $padding;
+        }
+    } @else {
+		padding-top: $padding;
+		height: 0;
+    }
+    iframe {
+        position: absolute; top: 0; left: 0;
+        width: 100%; height: 100%;
+    }
+}
+
+
+
+/* Background
+ * @include bg($type: gradient, $val: linear-gradient(to bottom,  rgba(0,0,0,0.09) 0%,rgba(0,0,0,0.97) 99%,rgba(0,0,0,0.97) 100%));
+ * @include bg($type: bgColor, $val: rgba(0,0,0,0.7));
+ * @include bg($type: image, $val: "/common/pattern-bg.png");
+ * @include bg($type: bgfullWidth, $val: rgba(0,0,0,0.7));
+ * @include bg($type: pattern, $val: "/common/pattern-bg.png");
+ */
+@mixin bg($type: bgColor, $val: rgba(0,0,0,0.7)){
+    @if $type == gradient{
+        background: if($val, $val, linear-gradient(to bottom,  rgba(0,0,0,0.09) 0%,rgba(0,0,0,0.97) 99%,rgba(0,0,0,0.97) 100%));
+    }@else if $type == pattern{
+        background:  url($image + $val) repeat;
+    }@else if $type == image{
+        background-image:url($image + $val);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }@else if $type == bgColor{
+        background-color: if($val, $val, rgba(0,0,0,0.7)); 
+    }@else if $type == bgfullWidth{
+        position: relative;
+        &:after{
+            content: "";
+            display: block;
+            position: absolute; top: 0; bottom: 0; left: -100%; right: -100%; z-index: -1;
+            background-color: if($val, $val, rgba(0,0,0,0.7));
+        }
+    }
+}
+
+
+
+/* Background
+ * @include pseudo-overlay($type-bg: bgColor, $val-bg: rgba(0,0,0,0.2));
+ */
+@mixin pseudo-overlay($type-bg, $val-bg, $animation:false){
+    position: relative;
+    &:before{
+        content: "";
+        position: absolute; top: 0; left: 0; 
+        width: 100%; height: 100%;
+        @include bg($type-bg, $val-bg);
+        @content;
+    }
+    @if($animation){
+        @extend %#{$animation};
+    }
+}
+/*-----------------------------------------
+effect bottomToTop
+------------------------------------------*/
+%effect-bottomToTop{
+    .overlay-container{
+        position: absolute; top: 100%; left: 0px; right: 0px;
+        @extend %default-transition;
+        margin-top: -30px;
+        transform: translateY(-50px);
+        [data-animation]{ opacity: 0; visibility: hidden; }
+    }
+    &:hover{
+        &:before{ box-shadow: inset 0px 0px 0px 3px $orange; }
+        .overlay-container{
+           transform: translateY(-100%);
+        }
+        [data-animation]{ opacity: 1; visibility: visible; }
+    }
+}
+.overlay--gradient{
+    @include pseudo-overlay($type-bg: gradient, $val-bg: false);
+    .overlay-container{
+        text-align: center;
+        color: $white;
+        padding: 0px 15px;
+    }
+    @extend %effect-bottomToTop;
+}
+.overlay--pattern{
+    @include pseudo-overlay($type-bg: pattern, $val-bg: "/common/pattern-bg.png");
+    .container{ 
+        position: relative; z-index: 9; 
+        color: $white; 
+        .title__wrapper{ 
+            color: $white; 
+            .title__main:after{ background-image: url(#{$image}/common/haeding_bar-white.png); }
+        }
+    }
+}
+/*-----------------------------------------
+ 3. FORM
+------------------------------------------*/
+// @include placeholder{}
+@mixin placeholder {
+    &.placeholder { @content; }
+    &:-moz-placeholder { @content; }
+    &::-moz-placeholder { @content; }
+    &:-ms-input-placeholder { @content; }
+    &::-webkit-input-placeholder { @content; }
+}
+// @include frm(md){ padding: 30px 0 60px; };
+
+@mixin frm($type) {
+  @if $type == all {
+    select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{ @content ; }
+  } @else if $type == input{
+    select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{ @content ; }
+  } @else if $type == btn {
+     input[type="button"], input[type="reset"], input[type="submit"], button, .button{ 
+       outline: none;
+       border: none;
+       background: transparent;
+       @content ; 
+    }
+  } @else if $type == radio {
+    input[type=checkbox], input[type=radio]{@content ;}
+  } 
+}
+
+@mixin links($type) {
+   @if $type == btn-link {
+     .button-link { 
+        display: inline-block; vertical-align: middle;
+        white-space: nowrap;
+        @extend %default-transition;
+        cursor: pointer;
+        @content ; 
+    }
+  } @else if $type == link-tel{
+    a[href^="tel:"]{@content ;}
+  } @else if $type == link-file{
+    a[href$=".pdf"]{@content ;}
+  } @else if $type == link-email{
+    a[href^="mailto"]{@content ;}
+  }
+}
+
+/*-----------------------------------------
+ 3. MEDIA RESPONSIVE
+------------------------------------------*/
+/* 
+ * @variable for media
+ * @Ex: @include media(md){ padding: 30px 0 60px; };
+ */
+$breakpoint-xs: 576px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 992px;
+$breakpoint-lg: 1200px;
+
+// MOBILE FIRST
+ @mixin media($point) {
+   @if $point == lg {
+     @media (min-width: $breakpoint-lg) { @content ; }
+  }
+    @else if $point == md {
+     @media (min-width: $breakpoint-md) { @content ; }
+  }
+   @else if $point == sm {
+     @media (min-width: $breakpoint-sm)  { @content ; }
+  }
+  @else if $point == xs {
+     @media (min-width: $breakpoint-xs)  { @content ; }
+
+  }
+}
+ @mixin media-only($point) {
+   @if $point == lg {
+     @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1px) { @content ; }
+  }
+    @else if $point == md {
+     @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md - 1px) { @content ; }
+  }
+   @else if $point == sm {
+     @media (min-width: $breakpoint-xs) and (max-width: $breakpoint-sm - 1px)  { @content ; }
+  }
+}
+@mixin media-destop-first($point) {
+   @if $point == lg {
+     @media (max-width: $breakpoint-lg - 1px) { @content ; }
+  }
+    @else if $point == md {
+     @media (max-width: $breakpoint-md - 1px) { @content ; }
+  }
+   @else if $point == sm {
+     @media (max-width: $breakpoint-sm - 1px) { @content ; }
+  }
+  @else if $point == xs {
+     @media (max-width: $breakpoint-xs - 1px) { @content ; }
+  }
+}
+@mixin media-retina{
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2)      and (max-width: 991px),
+  only screen and (   min--moz-device-pixel-ratio: 2)      and (max-width: 991px),
+  only screen and (     -o-min-device-pixel-ratio: 2/1)    and (max-width: 991px),
+  only screen and (        min-device-pixel-ratio: 2)      and (max-width: 991px),
+  only screen and (                min-resolution: 192dpi) and (max-width: 991px),
+  only screen and (                min-resolution: 2dppx)  and (max-width: 991px) {
+    @content ;
+  }
+}
+
+// unquote($str);
+@function str-split($string, $separator) {
+    // empty array/list
+    $split-arr: ();
+    // first index of separator in string
+    $index : str-index($string, $separator);
+    // loop through string
+    @while $index != null {
+        // get the substring from the first character to the separator
+        $item: str-slice($string, 1, $index - 1);
+        // push item to array
+        $split-arr: append($split-arr, $item);
+        // remove item and separator from string
+        $string: str-slice($string, $index + 1);
+        // find new index of separator
+        $index : str-index($string, $separator);
+    }
+    // add the remaining string to list (the last item)
+    $split-arr: append($split-arr, $string);
+
+    @return $split-arr;
+}
+/* fontsize
+ * @include fontsize($xs: 3rem 3.5rem, $lg: 5rem 5.5rem);
+ */
+@mixin fontsize($lg, $xs: false){
+  @if($xs){
+    font-size: nth($xs, 1);
+    @if (length($xs) >= 2){
+        line-height: nth($xs, 2);
+    }
+    
+  }
+
+  @include media(md){
+    font-size: nth($lg, 1);
+    @if (length($lg) >= 2){
+        line-height: nth($lg, 2);
+    }
+    // line-height: nth($lg, 2);
+  }
+}
+
+/*-----------------------------------------
+ 1. HEADING
+------------------------------------------*/
+// .title-wrapper>.main-title+.sub-title
+%title{
+    text-align: center;
+    margin-bottom: 30px;
+    %main-title{
+        color: $black;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        @include fontsize($xs: 3rem 3.5rem, $lg: 5rem 5.5rem);
+    }
+    %sub-title{
+        font-family: $font-subTitle;
+        // font-weight: 300;
+        // font-style: normal;
+        letter-spacing: .04em;
+        font-size: 1.614em;
+        line-height: 1.25;
+    }
+    %separator{
+        width: 25px; height: 2px;
+        margin: 15px 0;
+        background-color: #f7f6f2;
+    }
+}
+/*
+ * @include title-with-line(fixed-width, 60px, 2px, #eee){};
+ */
+@mixin title-with-line($type: fixed-width, $width: 40px, $height: 2px, $borderColor: $color-highlight){
+    @if $type == fluid-width{
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+		margin-bottom: 25px;
+		@content;
+        &:after{
+            content: "";
+            position: absolute; left: 50%; bottom: 0; 
+            width: $width; height: $height;
+            margin-left: -($width / 2);
+			background: $borderColor;  
+        }
+    }@else if $type == fixed-width{
+		text-align: center;
+        &:after{
+            content: "";
+            display: block;
+            width: $width; height: $height;
+            margin: auto;
+            background: $borderColor;
+            @content;
+        }
+    }@else if $type == multiple-lines{
+        .title-wrapper{
+            overflow: hidden;
+            text-align: center;
+        }
+        display: inline-block;
+        padding: 0 15px;
+		position: relative;
+		@content;
+        &:before, &:after {
+            content: "";
+            width: 200%; height: $height;
+			position: absolute; top: 50%;
+			margin-top: -($height / 2);
+			background: $borderColor;
+        }
+        &:before { right: 100%; }
+        &:after { left: 100%; }
+    }
+}
+
+%displayIcon{
+  @include media-destop-first(md){
+      &{
+          font-size: 0!important;
+          [class^="icon-"], [class*=" icon-"], .svg-inline--fa{
+              font-size: 30px;
+              display: inline-block;
+          }
+      }
+  }
+  @include media(md){
+      [class^="icon-"], [class*=" icon-"], .svg-inline--fa{ display: none; }
+  }
+}
+/*-----------------------------------------
+ 3. article
+------------------------------------------*/
+.article--imgRight{
+    .thumbnail-wrapper{
+        position: relative;
+        padding-bottom: 90px;
+        img{
+            width: 70%;
+            border: 10px solid $white;
+            float: right;
+            &:first-child{
+                position: absolute; bottom: 0; left: 0;
+                z-index: 2;
+            }
+        }
+        
+    }
+    h3{ margin-bottom: 30px; }
+    p{ 
+        margin-bottom: 20px; 
+        &::last-child{ margin-bottom: 0; }
+    }
+    .button{ margin-top: 24px; }
+}
+.article--imgLeft{
+    overflow-x: hidden;
+    .thumbnail-wrapper{
+        margin: 40px 0 15px;
+        box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.24);
+    }
+    .content-wrapper{
+        position: relative;
+        padding: 30px 0;
+        &:before{
+            content: "";
+            position: absolute; top: 0; bottom: 0; left: -90px; right: -100%;
+            z-index: -1;
+            background-color: #f1f2f4;
+        }
+    }
+    @include media(sm){
+        .thumbnail-wrapper{  margin: 145px 0 10px; }
+    } 
+}
+
+.list{
+    &--iconLeft{
+        i{
+        position: absolute; left: 0; top:0;
+        }
+        li{
+            position: relative;
+            padding-left: 45px;
+        }
+    }
+    &--imgLeft{
+        .thumbnail-wrapper{
+            float: left;
+            width: 100px;
+            margin-left: 10px;
+        }
+        .content-wrapper{
+            overflow: hidden;
+        }
+    }
+}

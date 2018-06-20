@@ -1,0 +1,138 @@
+.grid-container
+	include form
+	include nav
+//- $(document).foundation();
+//- data-allow-all-closed="true"
+	data-multi-expand="true"
+	disabled
+
+	data-deep-link="true"
+	modify the browser history when a accordion panel is clicked
+	allow users to open a particular accordion panel at page load with a hash-appended URL, scroll you to the open accordion panel
+	data-deep-link-smudge rolls the page up slightly after deep linking (to a horizontal accordion) so that the accordion is at the top of the viewport
+ul.accordion(data-accordion, data-deep-link="true", data-deep-link-smudge="true", data-update-history="true")
+	li.accordion-item.is-active(data-accordion-item)
+		a.accordion-title(href="#acc1") Accordion 1
+		#acc1.accordion-content(data-tab-content)
+		| Panel 1. I'm open because I'm loaded that way, but you can't close me
+	li.accordion-item(data-accordion-item)
+		a.accordion-title(href="#acc2") Accordion 2, you can't open me.
+		#acc2.accordion-content(data-tab-content)
+		| Panel 2. Lorem ipsum dolor
+//- 
+	var elem = new Foundation.Accordion(element, {
+		slideSpeed: 250, 
+		multiExpand: false,	
+		allowAllClosed: false,
+		deepLink: false,	// Link the location hash to the open pane. Set the location hash when the opened pane changes, and open and scroll to the corresponding pane when the location changes.
+		deepLinkSmudge: false, 	// If `deepLink` is enabled, adjust the deep link scroll to make sure the top of the accordion panel is visible
+		deepLinkSmudgeDelay:	300,    
+		updateHistory:	false	// If `deepLink` is enabled, update the browser history with the open accordion
+	});
+
+//- var elem = new Foundation.Tabs(element, options);
+	data-deep-link	boolean	false	Link the location hash to the active pane. Set the location hash when the active pane changes, and open the corresponding pane when the location changes.
+	data-deep-link-smudge	boolean	false	If `deepLink` is enabled, adjust the deep link scroll to make sure the top of the tab panel is visible
+	data-deep-link-smudge-delay	number	300	If `deepLinkSmudge` is enabled, animation time (ms) for the deep link adjustment
+	data-update-history	boolean	false	If `deepLink` is enabled, update the browser history with the open tab
+	data-auto-focus	boolean	false	Allows the window to scroll to content of active pane on load. Not recommended if more than one tab panel per page.
+	data-wrap-on-keys	boolean	true	Allows keyboard input to 'wrap' around the tab links.
+	data-match-height	boolean	false	Allows the tab content panes to match heights if set to true.
+	data-active-collapse	boolean	false	Allows active tabs to collapse when clicked.
+	data-link-class	string	tabs-title	Class applied to `li`'s in tab link list.
+	data-link-active-class	string	is-active	Class applied to the active `li` in tab link list.
+	data-panel-class	string	tabs-panel	Class applied to the content containers.
+	data-panel-active-class	string	is-active	Class applied to the active content container.
+.grid-x.grid-margin-x
+	.cell.medium-3
+		ul#deeplinked-tabs.vertical.tabs(data-deep-link="true", data-update-history="true", data-deep-link-smudge="true", data-tabs, data-match-height="true")
+			li.tabs-title.is-active
+				a(href="#panel1d", aria-selected="true") Tab 1
+			li.tabs-title
+				a(href="#panel2d") Tab 2
+	.cell.medium-9
+		.tabs-content(data-tabs-content="deeplinked-tabs")
+			#panel1d.tabs-panel.is-active
+				p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+			#panel2d.tabs-panel
+				p Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus.
+
+//- Responsive Accordion Tabs 
+	var elem = new Foundation.ResponsiveAccordionTabs(element, options);
+	The Accordion should have an id specified, but the plugin will automatically generate one if the id is omitted
+
+	var elem = new Foundation.Tooltip(element, options);
+ul.accordion(data-responsive-accordion-tabs="accordion medium-tabs")
+	li.accordion-item.is-active(data-accordion-item)
+		a.accordion-title(href="#") Accordion 1
+		.accordion-content(data-tab-content)
+			p I would start in the open state, due to using the `is-active` state class.
+	li.accordion-item(data-accordion-item)
+		a.accordion-title(href="#") Accordion 1
+		.accordion-content(data-tab-content)
+			p I would start in the open state, due to using the `is-active` state class.
+
+ul#example-tabs.tabs(data-responsive-accordion-tabs="tabs medium-accordion large-tabs")
+	li.tabs-title.is-active
+		a(href="#panel1d", aria-selected="true") Tab 1
+	li.tabs-title
+		a(href="#panel2d") Tab 2
+.tabs-content(data-tabs-content="example-tabs")
+	#panel1d.tabs-panel.is-active
+		p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+		p The 
+			span(data-tooltip, tabindex="1", title="Fancy word for a beetle.") scarabaeus
+			| hung quite
+	#panel2d.tabs-panel
+		p Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus.
+
+//- var elem = new Foundation.Equalizer(element, {
+		equalizeOnStack: false,
+		equalizeByRow: false,
+		equalizeOn: 'medium'
+	});
+.grid-x.grid-padding-x.medium-up-2.large-up-3(data-equalizer, data-equalize-by-row="true")
+	.cell(data-equalizer-watch)
+		p Lorem ipsum dolor sit amet, consectetur adipisicing elit
+	.cell(data-equalizer-watch)
+		p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+	.cell(data-equalizer-watch)
+		p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt 
+//- Use with Background Images
+div(data-interchange="[assets/img/interchange/small.jpg, small], [assets/img/interchange/medium.jpg, medium], [assets/img/interchange/large.jpg, large]")
+img(data-interchange="[assets/img/interchange/small.jpg, small], [assets/img/interchange/medium.jpg, medium], [assets/img/interchange/large.jpg, large]")
+
+.button(data-toggle="foo bar baz") Toggle things
+
+//- 
+	default: 4 by 3
+	widescreen: 16 by 9
+.responsive-embed.widescreen
+  iframe(width="560", height="315", src="https://www.youtube.com/embed/WUgvvPRH7Oc", frameborder="0", allowfullscreen="")
+
+
+.table-scroll(style="width: 50%")
+	table.hover.unstriped.stack
+		thead
+			tr
+				th(width="200") Table Header
+				th Table Header
+				th(width="150") Table Header
+				th(width="150") Table Header
+		tbody
+			tr
+				td Content Goes Here
+				td This is longer content Donec id elit non mi porta gravida at eget metus.
+				td Content Goes Here
+				td Content Goes Here
+			tr
+				td Content Goes Here
+				td
+				td Content Goes Here
+				td Content Goes Here
+			tr
+				td Content Goes Here
+				td
+				td Content Goes Here
+				td Content Goes Here
+

@@ -1,0 +1,244 @@
+.navbar-wrapper{
+    border-bottom: 1px solid $grey;
+}
+.nav--equalWidth{
+    li{
+        float: left;
+        width: 33.33333%;
+        text-align: center;
+        a{
+            display: block;
+            padding: 15px 0;
+            @include fontsize($xs: 1.2rem, $lg: 1.6rem);
+            text-transform: uppercase;
+        }
+        [class*="icon"]{
+            display: block;
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        &:hover{
+            background: $orange;
+            a {color: $white;}
+        }
+    }
+    @include media(sm){ 
+        display: flex;
+        li{
+            flex: 1;
+            width: 0;
+        }
+    }
+}
+// onl apply for hover just change text color
+%nav--textJustify{
+    text-align: justify;
+    line-height: 0;
+    li{
+        display: inline-block;
+        text-align: center;
+        a{
+            display: block;
+            font-size: 1.6rem; line-height: 1.6rem;
+        }
+    }
+    &:after{
+        content: '';
+        width: 100%;
+        display: inline-block;
+        vertical-align: top;
+    }
+}
+
+
+
+.banner-destination{
+    padding: 90px 0 30px;
+    color: $white;
+    @include fontsize($lg:2rem 1);
+    text-transform: capitalize;
+    .thumbnail-wrapper, .content-wrapper{
+        display: table-cell; vertical-align: top;
+    }
+    .content-wrapper{
+        width: 60%;
+        padding-left: 15px;
+    }
+    h1, h2{
+        font-weight: 600;
+        text-transform: uppercase;
+        margin: 5px 0;
+        @include fontsize($lg: 9rem);
+        &:first-letter { margin-left: -0.05em; }
+    }
+    .weather-wrapper{
+        text-transform: uppercase;
+        font-weight: 600;
+        span{ margin-right: 15px; }
+        i{
+            font-size: 32px; line-height: 20px;
+        }
+    }
+    .overlay{
+        position: absolute; top: 0; left: 0; 
+        width: 100%; height: 100%;
+        text-align: center;
+        color: $white;
+        background: linear-gradient(to bottom,  rgba(0,0,0,0.09) 0%,rgba(0,0,0,0.97) 99%,rgba(0,0,0,0.97) 100%);
+        &:after{
+            content: "";
+            display: inline-block;
+            vertical-align: middle;
+            height: 100%;
+        }
+    }
+    @include media(sm){
+        padding: 60px 0 0;
+        .thumbnail-wrapper, .content-wrapper{
+            vertical-align: middle;
+        }
+        .content-wrapper{
+            padding-left: 30px;
+        }
+    }
+    @include media-destop-first(xs){ 
+        .weather-wrapper span:last-child{ display: block; }
+    }
+}
+
+
+.panel{
+    background: transparent;
+    box-shadow: none;
+    &-heading{
+        padding: 0;
+    }
+    &-body{ 
+        position: relative;
+        margin-top: 10px;
+        padding: 0 0 0 20px;
+        border-top: 0!important;
+        &:before{
+            content:"";
+            display: block;
+            position: absolute; top: 0; left: 0; bottom: 0;
+            margin: 7px 0;
+            border-left: 5px solid #333;
+        }
+        p:last-child{ margin-bottom: 0;}
+    }
+    &-title{
+        font-size: 2rem; line-height: 1.4;
+    }
+    &-group{
+        min-height: 240px;
+    }
+}
+
+.todo-slider{
+    padding: 0 15px;
+    .slider-item{
+        float: left;
+        width: 25%; height: auto;
+        margin: 0 15px;
+        img{ width: 100%; }
+        h4{
+            @include title-with-line(fixed-width, 60px, 2px, $orange){
+                margin-top: 10px;
+            };
+            @include fontsize($lg: 2rem);
+        }
+    }
+    .slick-dots{ margin-top: 30px; }
+}
+.attraction-block{
+    @include bg(image,  "/pattren-img1.jpg");
+    padding-top: 50px;
+   
+}
+
+
+.toknow-content{
+    margin-bottom: 30px;
+    li{
+        background-color: #f7f7f7;
+        border-bottom: 2px solid $white;
+        @include fontsize( $lg:  1.6rem);
+        
+        > *{ 
+            display: block; 
+            padding: 6px 10px;
+        }
+        strong{
+            background: #e9e9e9;
+            
+        }
+    }
+    @include media(sm){
+        display: table;
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        li{
+            display: table-row;
+             > *{ 
+                display: table-cell;
+                padding: 21px 20px;
+            }
+            strong{ width: 30%; }
+        }
+    }
+}
+.whentogo-wrapper{
+    text-align: center;
+    border: 1px solid $grey;
+    font-size: 1.6rem;
+    .thumbnail-wrapper{
+        @include pseudo-overlay($type-bg: bgColor, $val-bg: rgba(0,0,0,0.4));
+        img{ width: 100%; }
+    }
+    h4{
+        text-transform: uppercase;
+        font-size: 2rem;
+        margin: 15px 0;
+    }
+    .progress-list{
+        @extend %clearfix;
+        margin-bottom: 30px;
+        h6{ text-transform: uppercase; }
+        li{
+            float: left;
+            width: 25%;
+            padding: 0 15px;
+        }
+        .progress {
+            float: left;
+            width: 100%;
+            height: 8px;
+            background: #e9e9e9;
+            border-radius: 0px;
+        }
+        .progress-bar {
+            width: 50%;
+            background: $orange;
+        }
+        
+    }
+    .button-more{
+        display: block;
+        padding: 10px 15px;
+        text-transform: uppercase;
+        font-weight: bold;
+        border-top: 1px solid $grey;
+        &:hover{
+            color: $white;
+            background-color: $orange;
+        }
+    }
+    
+    @include media-only(md){ 
+        .progress-list{
+            li{ width: 16.666666666666664%; }
+        }
+    }
+}

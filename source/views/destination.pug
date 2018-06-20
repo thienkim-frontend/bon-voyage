@@ -1,0 +1,169 @@
+//- extends layout to your side
+extends layout/layout
+
+block var
+	- title = "Destination page";
+	
+block content
+	- var $destination = "paris"
+	- $imgBaseUrl = $imgBaseUrl + $destination + "/";
+
+	// Begin banner block
+	section.block--bgImage.banner-destination(style= "background-image: url(" + $imgBaseUrl + "sub-banner-destinations.jpg)")
+		.container
+			.thumbnail-wrapper
+				img(src=$imgBaseUrl + "paris-img.jpg", alt="")
+				.overlay
+					a(href="#").icon-rounded
+						i.fas.fa-play(aria-hidden="true")
+			.content-wrapper
+				span Discover
+				h1 Paris
+				.weather-wrapper
+					span.current-temperature #[i.weather-icon.icon-27] 17°C
+					span.current-weather Paris, Rain
+					span.current-date Tue Jun 12 2018
+			
+	// End banner block
+				
+		
+	// Start nav-destination
+	.navbar-wrapper
+		.container
+			ul.nav--equalWidth
+				mixin navItem(icon, text, link="#")
+					li: a(href= link)
+						i(class= icon)
+						span= text
+				+navItem("icon-opera", "Culture", "#culture")
+				+navItem("icon-man", "History", "#history")
+				+navItem("icon-social-1", "Thing To Do", "#thing-to-do")
+				+navItem("icon-travel-7", "Pinned Location", "#")
+				+navItem("icon-medical", "Top Attraction", "#top-attraction")
+				+navItem("icon-emoticon", "Good to know", "#good-to-know")
+
+	// End nav-destination
+
+	// Start culture-section
+	section#culture.block.article--imgRight
+		.container
+			+title-block("Destination", "WECLOME TO PARIS")
+			.col-sm-6.pull-right
+				.thumbnail-wrapper
+					img(src=$imgBaseUrl + "culture_img1.jpg", alt="")
+					img(src=$imgBaseUrl + "culture_img2.jpg", alt="")
+			.col-xs-12.col-sm-6
+				.content-wrapper
+					h3 EXTRAORDINARY EXPERIENCE IN CULTURE OF PARIS
+					p This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio.
+					p Sed non mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo.
+					a(href="#").button.button-default See All Tour
+			
+
+	// Start history-section
+	section#history.block.article--imgLeft
+		.container
+			.row
+				.col-xs-12.col-sm-5
+					.thumbnail-wrapper
+						img(src=$imgBaseUrl + "history-img01.jpg", alt="")
+				.col-sm-7
+					.content-wrapper
+						+title-block("Paris", "HISTORY OF PARIS").align-left
+						+bs-accordion("history-accordion")
+							+bs-panel(true, "Early Settlement", "One")  
+								p With upwards of 12 million inhabitants, the greater metropolitan area of Paris is home to almost 19% of France’s total population. Since before the Revolution, Paris has been what urban planners like to call a ‘hypertrophic city’ – the enlarged ‘head’ of a nation-state’s ‘body’. 
+								a(href="#") Read more
+							+bs-panel(false, "French Revolution", "Two")  
+								p The greater metropolitan area of Paris is home to almost 19% of France’s total population (central Paris counts just under 2.2 million souls). Since before the Revolution, Paris has been what urban planners like to call a ‘hypertrophic city’ – the enlarged ‘head’ of a nation-state’s ‘body’. The urban area of the next biggest city – Marseilles – is just over a third the size of central Paris.
+							+bs-panel(false, "History of Paris", "Three")  
+								p Since before the Revolution, Paris has been what urban planners like to call a ‘hypertrophic city’ – the enlarged ‘head’ of a nation-state’s ‘body’. The urban area of the next biggest city – Marseilles – is just over a third the size of central Paris.
+	
+	// Start todo-section
+	section#thing-to-do.block.todo-block
+		.container
+			+title-block("Destination", "THING TO DO IN PARIS")
+		.todo-slider
+			mixin todoItem(imgUrl, title, text)
+				// Start feature-item
+				figure.slider-item.overlay--gradient&attributes(attributes)
+					img(src=$imgBaseUrl + imgUrl, alt="")
+					.overlay-container
+						h4= title
+						p(data-animation)!= text || "Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus "
+			+todoItem("paris-blog-img01.jpg", "Bar & Restaurants", "Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum")
+			+todoItem("paris-blog-img02.jpg", "Events", "")
+			+todoItem("paris-blog-img03.jpg", "Trip & Tour", "")
+			+todoItem("paris-blog-img04.jpg", "Where to stay", "")
+			+todoItem("paris-blog-img01.jpg", "Bar & Restaurants", "Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum")
+			+todoItem("paris-blog-img02.jpg", "Events", "")
+			+todoItem("paris-blog-img03.jpg", "Trip & Tour", "")
+			+todoItem("paris-blog-img04.jpg", "Where to stay", "")
+	
+	// Start attraction-section
+	section#top-attraction.attraction-block.overlay--pattern
+		.container
+			+title-block("Destination", "TOP ATTRACTION IN PARIS")
+			.main-slider
+				mixin attraction-slider(urlImg, title, txt)
+					// begin slider-item
+					.slider__item.caption--bottom&attributes(attributes)
+						a(href="#", target="_blank")
+							img( src=$imgBaseUrl + urlImg, alt="")
+							.slider__caption
+								h4!= title || "Eiffel Tower"
+								p= txt || "Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat"
+				+attraction-slider("show-slide-1.jpg", "", "")
+				+attraction-slider("show-slide-2.jpg", "", "")
+				+attraction-slider("show-slide-3.jpg", "", "")
+				+attraction-slider("show-slide-4.jpg", "", "")
+				+attraction-slider("show-slide-5.jpg", "", "")
+			.thumbnail-slider
+				each item in ["thumbnail-img01.jpg", "thumbnail-img02.jpg", "thumbnail-img03.jpg", "thumbnail-img04.jpg", "thumbnail-img05.jpg"]
+					li: img(src=$imgBaseUrl + item, alt="")
+
+	// Start toknow-section
+	section#good-to-know.block.toknow-block
+		.container
+			.row
+				.col-md-8
+					+title-block("Destination", "GOOD TO KNOW").align-left
+					ul.toknow-content
+						mixin infoItem(title, text)
+							li #[strong!= title] <span>!{text}</span>
+						+infoItem("Country", "France")
+						+infoItem("Visa Requirements", "Visa in not needed for EU. Everyone else needs a visa.")
+						+infoItem("Languages spoken", "French, English")
+						+infoItem("Currency used", "Euro")
+						+infoItem("Area (km<sup>2</sup>)", "359.96 km<sup>2</sup>")
+				.col-md-4
+					.whentogo-wrapper
+						.thumbnail-wrapper
+							img( src=$imgBaseUrl + "tabel-row-column.jpg", alt="")
+						h4 When To Go Paris
+						ul.progress-list
+							mixin progressItem(month, value)
+								li
+									h6= month
+									.progress
+										.progress-bar(role="progressbar", aria-valuenow=value, aria-valuemin="0", aria-valuemax="100")
+							each item, index in ["Jan", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+								- var percent = Math.floor((Math.random() * 100) + 1);
+								+progressItem(item, percent)
+						a(href="#").button-more See More
+
+	- $imgBaseUrl = "images/";
+	+testimonial-block()
+	+banner-block()
+
+	// Start post-section
+	section.block.post-block
+		.container
+			+title-block("MEET INTERESTING PEOPLE", "RELATED NEWS POST")
+
+			.row
+				+postItem-style2($imgBaseUrl + "placeholder/rala-post-img1.jpg", "", "", "")(class="col-sm-6 col-md-4")
+				+postItem-style2($imgBaseUrl + "placeholder/rala-post-img2.jpg", "", "", "")(class="col-sm-6 col-md-4")
+				+postItem-style2($imgBaseUrl + "placeholder/rala-post-img3.jpg", "", "", "")(class="col-sm-6 col-md-4")
+
+	// End post-section

@@ -1,0 +1,35 @@
+- var idParent
+mixin bs-accordion(idAccordion)
+    - idParent = idAccordion
+    .panel-group(role="tablist", aria-multiselectable="true", id= idAccordion)&attributes(attributes)
+        block
+mixin bs-panel(active= false, title, id)  
+    - var isExpanded = false
+    - var classActive = ""
+    - var classCollapsed = "collapsed"
+    .panel
+        if(active)
+            - isExpanded = true
+            - classActive = "in"
+            - classCollapsed = ""
+        .panel-heading(role="tab", id= "heading" + id)
+            h4.panel-title
+                a(role="button", class= classCollapsed, data-toggle="collapse", data-parent="#" + idParent, href="#collapse" + id, aria-expanded=isExpanded, aria-controls="collapseOne")!= title
+
+        .panel-collapse.collapse(role="tabpanel", aria-labelledby="heading" + id, id= "collapse"+ id, class= classActive)
+            .panel-body
+                if (block)
+                    block
+                else
+                    p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis quam saepe itaque eum quae dolorem qui ipsum dolores accusantium blanditiis soluta voluptatem similique, enim quas aperiam laboriosam natus mollitia eligendi!
+mixin bs-tab(id, title)
+    // Nav tabs
+    ul.nav.nav-tabs(role="tablist")
+        li.active(role="presentation")
+            a(href="#find-hotel", aria-controls="find-hotel", role="tab", data-toggle="tab") <i class="icon-travel"></i> Find Hotel
+        li(role="presentation")
+            a(href="#find-flights", aria-controls="find-flights", role="tab", data-toggle="tab") <i class="icon-transport2"></i> Find Flights
+
+    // Tab panes
+    .tab-content
+        #find-hotel.tab-pane.active(role="tabpanel", style="background-image: url(images/bg-search-01.png)")

@@ -1,0 +1,43 @@
+//- TABLE OF CONTENT
+ 1. FORM CONTACT
+ 2. FORM NEWSLETTER
+
+//- FORM CONTACT
+mixin contact-frm
+    form#contact-frm(action="", name="")
+        label.sr-only(for="user-name") Name
+        input#user-name.form-control(type="text", placeholder="Name")
+
+        label.sr-only(for="user-phone") Phone
+        input#user-phone.form-control(type="number", placeholder="Phone")
+        
+        label.sr-only(for="user-email") Email
+        input#user-email.form-control(type="email", placeholder="Email")
+        
+        button.btn.btn-cta(type="submit") Send
+    // End contact-frm
+
+//- FORM NEWSLETTER
+mixin newsletter-frm
+    form#newsletter-frm(action="", name="", method="post", enctype="multipart/form-data")
+        .frm-wrapper.form-inline
+            .form-group.col-12.col-md-6
+                label.sr-only(for="user-name") Your name
+                input.form-control(type="text", placeholder="Your name:", id="user-name")
+
+            .form-group.col-12.col-md-6
+                label.sr-only(for="user-phone") Your phone
+                input.form-control(type="text", placeholder="Your phone:", id="user-phone")
+            
+            button(type="submit").btn.btn-cta Order now <i class="fa fa-long-arrow-right"></i>
+        .notice
+            i.icon-lock 
+            | * Your data will not be transferred
+    // End newsletter-frm
+
+//- +select("select-region", "Select region", ["All Destinations", "Africa"])(name="select-region")
+mixin select(id, label, optionArr)
+    label(for=id).sr-only= label 
+    select(id= id)&attributes(attributes)
+        each item in optionArr
+            option(value="")= item

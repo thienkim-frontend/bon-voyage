@@ -1,0 +1,69 @@
+//- extends layout to your side
+extends layout/layout
+
+block var
+	- title = "About page";
+block content
+
+	// Start hero-section
+	section.hero-section.block--bgImage
+		+heroItem("About us", "Curabitur nunc erat, consequat in erat ut, congue bibendum nulla. Suspendisse id pharetra lacus, et hendrerit mi quis leo elementum.")
+			+breadcrumb([["pages", "#"]], "about")
+
+	// End hero-section	
+
+	// Start service-section
+	section.block.service-block
+		.container
+			+title-block("About Bon Voyage", "WELCOME TO BON VOYAGE")
+			.row
+				.col-md-6
+					+iconItem("icon-signs-2", "Anean Sollicitudin", "")(class="align-left")
+					+iconItem("icon-pen", "Sollicitudin Qusi bibendum", "")(class="align-left")
+					+iconItem("icon-people-5", "Ninsi Elit Consequat", "")(class="align-left")
+
+				mixin articleItem(imgUrl, name, text)
+					.article__item.tour--effectHover&attributes(attributes)
+						.thumbnail-wrapper
+							a(href="#"): img(src=imgUrl, alt='')
+						.article__content
+							h3: a(href='#', title)= name 
+							p!= text || "This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum"
+							a(href="#").button.button-default see more
+				.col-sm-6.col-md-3
+					+articleItem($imgBaseUrl + "blog-grid-01.jpg", "WHAT WE DO?", "")
+				.col-sm-6.col-md-3
+					+articleItem($imgBaseUrl + "blog-grid-02.jpg", "WHAT WE DO?", "")
+
+
+	// Start feature-section
+	section.package-block
+		+featureItem($imgBaseUrl + "blog-services-img01.jpg", "icon-monument", "TRAVEL PARIS")
+		+featureItem($imgBaseUrl + "blog-services-img02.jpg", "icon-monument-1", "TRAVEL USA")
+		+featureItem($imgBaseUrl + "blog-services-img03.jpg", "icon-monuments", "TRAVEL LONDON")
+		+featureItem($imgBaseUrl + "blog-services-img04.jpg", "icon-monuments-1", "TRAVEL INDIA")
+	
+	section.block.highlight-block
+		.container
+			+title-block("About Bon Voyage", "WHY CHOOSE US")
+
+			.row
+				.col-sm-4
+					+iconItem("icon-transport-7", "ENTRADA HISTORI", "")
+				.col-sm-4
+					+iconItem("icon-road-1", "CORE VALUES", "")
+				.col-sm-4
+					+iconItem("icon-travel-8", "SUSTAINABLE TRAVEL", "")
+				.col-sm-4
+					+iconItem("icon-cup", "AWARDS & ACCOLADES", "")
+				.col-sm-4
+					+iconItem("icon-road-perspective-of-curves", "WORK WITH LOCALS", "")
+				.col-sm-4
+					+iconItem("icon-photo", "GREEN ADVENTURES", "")
+
+	+testimonial-block()
+
+	+banner-block()
+
+	+partner()
+	

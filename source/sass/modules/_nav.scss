@@ -1,0 +1,51 @@
+@mixin default-nav{
+    ul{ list-style: none; padding-left: 0; margin-bottom: 0;}
+    
+    > ul{
+        @extend %clearfix;
+        > li{
+            float: left;
+            position: relative;
+            > ul{
+                @extend %bg-hightlight;
+                @extend %triangle-top;
+            }
+        }
+        a{
+            display: block;
+            font-size: 15px;
+            color: #292929;
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 24px 20px 23px;
+        }
+        
+        ul{
+            position: absolute; top: 100%; left: 0px;
+            @extend %default-transition;
+            a{
+                padding: 8px 15px;
+                border-bottom: 1px dotted rgba(255,255,255,0.4);
+            }
+        }
+        @include media(md){
+            ul{
+                opacity: 0; visibility: hidden;
+                width: 220px;
+                margin-top: 2px;
+                a{ color: $white; }
+            }
+            &:hover{
+                ul{ 
+                    opacity: 1; visibility: visible;
+                    top: 100%;
+                }
+                
+            }
+        }
+        
+    }
+    .menu-item-has-children > a{
+        @include svg-absolutePos(8px, 5px, "0 0 320 512", "M151.5 347.8L3.5 201c-4.7-4.7-4.7-12.3 0-17l19.8-19.8c4.7-4.7 12.3-4.7 17 0L160 282.7l119.7-118.5c4.7-4.7 12.3-4.7 17 0l19.8 19.8c4.7 4.7 4.7 12.3 0 17l-148 146.8c-4.7 4.7-12.3 4.7-17 0z");
+    }
+}

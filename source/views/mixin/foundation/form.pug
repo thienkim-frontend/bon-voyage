@@ -1,0 +1,178 @@
+//- TABLE OF CONTENT
+	1. FORM CONTACT
+	2. FORM NEWSLETTER
+
+
+form.grid-x.grid-padding-x
+	.medium-6.cell
+		label Password
+			input(type="password", aria-describedby="passwordHelpText")
+		p#passwordHelpText.help-text Your password must have at least 10 characters, a number, and an Emoji.
+
+		label.button(for="exampleFileUpload") Upload File
+		input#exampleFileUpload.show-for-sr(type="file")
+
+		select
+			option(value="husker") Husker    
+			option(value="starbuck") Starbuck
+
+	fieldset.medium-6.cell.fieldset
+		legend Choose Your Favorite
+		input#pokemonRed(type="radio", name="pokemon", value="Red", required="")
+		label(for="pokemonRed") Red
+		input#pokemonBlue(type="radio", name="pokemon", value="Blue")
+		label(for="pokemonBlue") Blue
+
+	.small-3.cell
+		label.text-right.middle(for="middle-label") Label
+	.small-9.cell
+		input#middle-label(type="text", placeholder="Right- and middle-aligned text input")
+
+	.success.callout(data-closable)
+		p You can close me too, and I close using a Motion UI animation.
+		button.close-button(aria-label="Dismiss alert", type="button", data-close)
+			span(aria-hidden="true") &times;
+
+//- button
+mixin fd-button
+	a.button.success.disabled(href="about.html") Learn More
+		a.button.hollow.alert.expanded(href="about.html") Learn More
+		.expanded.button-group
+			a.button Expanded
+			a.button Button
+			a.button Group
+		.stacked-for-small.button-group
+			a.button Expanded
+			a.button Button
+			a.button Group
+		.button-group
+			a.button Primary Action
+			a.dropdown.button.arrow-only
+				span.show-for-sr Show menu
+//- input-group
+mixin fd-input-group
+	.input-group
+		span.input-group-label $
+		input.input-group-field(type="number")
+		.input-group-button
+			input.button(type="submit", value="Submit")            
+//- switch
+mixin fd-switch
+	.switch.large
+		input#yes-no.switch-input(type="checkbox", name="exampleSwitch")
+		label.switch-paddle(for="yes-no")
+			span.show-for-sr Do you like me?
+			span.switch-active(aria-hidden="true") Yes
+			span.switch-inactive(aria-hidden="true") No
+
+//- slider
+mixin fd-slider
+	label#ageLabel Age
+	#ex-slider.slider(aria-labelledby="ageLabel", aria-describedby="ageHelpText")
+		span.slider-handle(data-slider-handle, role="slider", tabindex="1", aria-controls="sliderOutput2")
+		span.slider-fill(data-slider-fill)
+		span.slider-handle(data-slider-handle, role="slider", tabindex="1")
+		input(type="hidden")
+		input(type="hidden")
+	input#sliderOutput2(type="number")
+	p#ageHelpText How old are you?
+
+mixin fd-validate
+	.
+		<form data-abide novalidate>
+			<div data-abide-error class="alert callout" style="display: none;">
+			<p><i class="fi-alert"></i> There are some errors in your form.</p>
+			</div>
+			<div class="grid-container">
+			<div class="grid-x grid-margin-x">
+				<div class="cell small-12">
+				<label>Number Required
+					<input type="text" placeholder="1234" aria-describedby="exampleHelpText" required pattern="number">
+					<span class="form-error">
+					Yo, you had better fill this out, it's required.
+					</span>
+				</label>
+				<p class="help-text" id="exampleHelpText">Here's how you use this input field!</p>
+				</div>
+				<div class="cell small-12">
+				<label>Password Required
+					<input type="password" id="password" placeholder="yeti4preZ" aria-describedby="exampleHelpText" required >
+					<span class="form-error">
+					I'm required!
+					</span>
+				</label>
+				<p class="help-text" id="exampleHelpText">Enter a password please.</p>
+				</div>
+				<div class="cell small-12">
+				<label>Re-enter Password
+					<input type="password" placeholder="yeti4preZ" aria-describedby="exampleHelpText2" required pattern="alpha_numeric" data-equalto="password">
+					<span class="form-error">
+					Hey, passwords are supposed to match!
+					</span>
+				</label>
+				<p class="help-text" id="exampleHelpText2">This field is using the `data-equalto="password"` attribute, causing it to match the password field above.</p>
+				</div>
+			</div>
+			</div>
+			<div class="grid-container">
+			<div class="grid-x grid-margin-x">
+				<div class="cell large-6">
+				<label>URL Pattern, not required, but throws error if it doesn't match the Regular Expression for a valid URL.
+					<input type="text" placeholder="https://foundation.zurb.com" pattern="url">
+				</label>
+				</div>
+				<div class="cell large-6">
+				<label>Website Pattern, not required, but throws error if it doesn't match the Regular Expression for a valid URL or a Domain.
+					<input type="text" placeholder="https://zurb.com or zurb.com" pattern="website">
+				</label>
+				</div>
+			</div>
+			</div>
+			<div class="grid-container">
+			<div class="grid-x grid-margin-x">
+				<div class="cell large-6">
+				<label>European Cars, Choose One, it can't be the blank option.
+					<select id="select" required>
+					<option value=""></option>
+					<option value="volvo">Volvo</option>
+					<option value="saab">Saab</option>
+					<option value="mercedes">Mercedes</option>
+					<option value="audi">Audi</option>
+					</select>
+				</label>
+				</div>
+				<fieldset class="cell large-6">
+				<legend>Check these out</legend>
+				<input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
+				<input id="checkbox2" type="checkbox" required><label for="checkbox2">Checkbox 2</label>
+				<input id="checkbox3" type="checkbox"><label for="checkbox3">Checkbox 3</label>
+				</fieldset>
+			</div>
+			</div>
+			<div class="grid-container">
+			<div class="grid-x grid-margin-x">
+				<fieldset class="cell large-6">
+				<legend>Choose Your Favorite - not required, you can leave this one blank.</legend>
+				<input type="radio" name="pockets" value="Red" id="pocketsRed"><label for="pocketsRed">Red</label>
+				<input type="radio" name="pockets" value="Blue" id="pocketsBlue"><label for="pocketsBlue">Blue</label>
+				<input type="radio" name="pockets" value="Yellow" id="pocketsYellow"><label for="pocketsYellow">Yellow</label>
+				</fieldset>
+				<fieldset class="cell large-6">
+				<legend>Choose Your Favorite, and this is required, so you have to pick one.</legend>
+				<input type="radio" name="pokemon" value="Red" id="pokemonRed"><label for="pokemonRed">Red</label>
+				<input type="radio" name="pokemon" value="Blue" id="pokemonBlue" required><label for="pokemonBlue">Blue</label>
+				<input type="radio" name="pokemon" value="Yellow" id="pokemonYellow"><label for="pokemonYellow">Yellow</label>
+				</fieldset>
+			</div>
+			</div>
+			<div class="grid-container">
+			<div class="grid-x grid-margin-x">
+				<fieldset class="cell large-6">
+				<button class="button" type="submit" value="Submit">Submit</button>
+				</fieldset>
+				<fieldset class="cell large-6">
+				<button class="button" type="reset" value="Reset">Reset</button>
+				</fieldset>
+			</div>
+			</div>
+		</form>

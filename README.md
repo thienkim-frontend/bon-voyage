@@ -1,5 +1,13 @@
 # Source code for Bootstrap website's template
 
+#### Website
+  - [Home page](https://thienkim-frontend.github.io/bon-voyage/)
+  - [Destination page](https://thienkim-frontend.github.io/bon-voyage/destination.html)
+  - [Blog page](https://thienkim-frontend.github.io/bon-voyage/blog.html)
+  - [Blog detail page](https://thienkim-frontend.github.io/bon-voyage/blog-detail.html)
+  - [About page](https://thienkim-frontend.github.io/bon-voyage/about.html)
+  - [Contact page](https://thienkim-frontend.github.io/bon-voyage/contact.html)
+
 #### Folder structure
 
 ```
